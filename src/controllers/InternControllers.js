@@ -1,1 +1,1 @@
-const authorModel = require("../models/InternModel")
+const authorModel = require("../models/internModel")

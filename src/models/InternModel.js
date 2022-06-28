@@ -1,30 +1,41 @@
-const mongoose = require('mongoose')  // importing the mongoose to create the Intern schema
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const internSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+    name:
+    {
+        type:String,
+        required:true,
+        trim:true
     },
-    email: {
+
+    email: 
+    {
         type: String,
+        required: true,
         unique: true,
-        required: true
+        lowercase: true,
+        trim: true
     },
-    mobile: {
-        type: String,
+
+    mobile: 
+    {
+        type: Number,
+        required: true,
         unique: true,
-        required: true
+    }, 
+
+    collegeId: 
+    {
+        type:ObjectId,
+         ref: "colleges"
     },
-    collegeId: {
-        type: objectId,
-        ref: '',
-        required: true
-    },
-    isDeleted: {
-        type: Boolean,
+        
+    isDeleted: 
+    {
+        type:Boolean, 
         default: false
     },
-  
-}, { timestamps: true })
+},{timestamps:true})
 
-module.exports = mongoose.model('Intern', internSchema) // mongoose creates the InternModel
+module.exports = mongoose.model("intern",internSchema)
