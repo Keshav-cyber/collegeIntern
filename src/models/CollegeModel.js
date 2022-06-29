@@ -2,15 +2,15 @@ const mongoose = require('mongoose')
 
 const collegeSchema = new mongoose.Schema({
 
-     name: 
+     name:   
      {                        
-         type:String,               //example: iith
+         type:String,               //example: iith 
          unique:true,
          required:true,
          trim:true
      },
 
-     fullName: 
+     fullName:  
      {
          type:String,               //example: `Indian Institute of Technology, Hyderabad`
          required:true,
@@ -31,7 +31,7 @@ const collegeSchema = new mongoose.Schema({
           default: false
        },
 
-    }, {timestamps:true})
+    })
 
     module.exports = mongoose.model("colleges",collegeSchema)
        
