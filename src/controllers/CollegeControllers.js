@@ -35,7 +35,7 @@ const createCollege = async function (req, res) {
         if(!isValidUrl(logoLink)){
              return res.status(400).send({status:false,msg:"enter valid url"})
         }
-       
+        
         let checkName = await collegeModel.findOne({name:name})
         if(checkName) return res.status(400).send({status:false,msg:"name is already exists"})
 
@@ -58,14 +58,24 @@ module.exports.createCollege = createCollege
 const getCollageIntern =  async function (req, res) {
     try {
       let collegeName  = req.query.collegeName
-      if(!collegeName) return res.status(400).send({msg:"college name is required"})
-      let college = await collegeModel.findOne({name:collegeName,isDeleted:false})
+      if(!collegeName) return res.status(400).send({msg:"collegeName is required"})
+      let college = await collegeModel.findOne({name:collegeName})
       if(!college) return res.status(404).send({status:false, msg:"college not found"})
-      let interns = await internModel.find({collegeId:college._id,isDeleted:false})
+
+      if(college.isDeleted == true) return res.status(404).send({status:false,msg:"college is deleted"})
+      let interns = await internModel.find({collegeId:college._id,isDeleted:false}).select({name:1,email:1,mobile:1})
      
-      college._doc.interns = interns
+      //college._doc.interns = interns
+      
+      const collegeData = {
+        name:college.name,
+        fullName:college.fullName,
+        logoLink:college.logoLink,
+        interns:interns
+      }
+
     
-      res.status(200).send({data:college})
+      res.status(200).send({status: true,data:collegeData})
 
     }
     catch(error){

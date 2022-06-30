@@ -2,13 +2,13 @@ const internModel = require("../models/internModel")
 const collegeModel = require("../models/collegeModel")
 
 
-const {isValid,isValidName,isValidEmail,isValidMobile,isValidObjectId} = require("./validation")
+const {isValid,isValidName,isValidEmail,isValidMobile, isValidcollegeName} = require("./validation")
 
 
 const createIntern =  async function (req, res) {
     try {
-       let {name,email,mobile,collegeId}=req.body
-       console.log(req.body)
+       let {name,email,mobile,collegeName}=req.body
+     
        if (Object.keys(req.body).length < 1) 
        {
            return res.status(400).send({status:false, msg: "Insert Data : BAD REQUEST" })
@@ -39,22 +39,22 @@ const createIntern =  async function (req, res) {
        let checkMobile = await internModel.findOne({mobile:mobile})
        if(checkMobile) return res.status(400).send({msg:"mobile number is already exists"})
 
-       if (!isValid(collegeId)) {
-        return res.status(400).send({ msg: "Enter collegeId" })
+       if (!isValid(collegeName)) {
+        return res.status(400).send({ msg: "Enter collegeName" })
        }
-       if(!isValidObjectId){
-        return res.status(400).send({ msg: "Enter valid collegeId" })
+       if(!isValidcollegeName){
+        return res.status(400).send({ msg: "Enter valid collegeName" })
        }
-       let checkCollege = await collegeModel.findOne({_id:collegeId})
+       let checkCollege = await collegeModel.findOne({name:collegeName})
        if(!checkCollege) return res.status(400).send({msg:"collage not exists"})
 
+       req.body.collegeId = checkCollege._id
        let createdIntern = await internModel.create(req.body)
 
        res.status(201).send({status:true,data:createdIntern})
 
     }
     catch(error){
-        console.log(error)
         res.status(500).send({ msg: error.message })
     }
 }
