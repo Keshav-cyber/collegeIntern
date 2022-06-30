@@ -8,11 +8,12 @@ const createCollege = async function (req, res) {
     try {
 
         let { name, fullName, logoLink } = req.body;
-
+        
         if (Object.keys(req.body).length < 1) 
         {
             return res.status(400).send({status:false, msg: "Insert Data : BAD REQUEST" })
         }
+        if(Object.keys(req.query).length >0)  return res.status(400).send({status:false, msg: "don,t put data in params" })
         if (!isValid(name)) 
         {
             return res.status(400).send({ status:false,msg: "Enter Name" })
@@ -21,17 +22,17 @@ const createCollege = async function (req, res) {
         {
             return res.status(400).send({status:false, msg: "name only take alphabets" })
         }
-        if (!isValid(fullName)) 
-        {
+         if (!isValid(fullName)) 
+         {
             return res.status(400).send({status:false, msg: "Enter Full Name" })
-        }
+         }
         if (!isValidcollegeFN(fullName)) 
         {
             return res.status(400).send({status:false, msg: "fullName only take alphabets" })
         }
-        if (!isValid(logoLink)) {
-            return res.status(400).send({ status:false,msg: "Enter logoLink Name"})
-        }
+         if (!isValid(logoLink)) {
+             return res.status(400).send({ status:false,msg: "Enter logoLink"})
+         }
         if(!isValidUrl(logoLink)){
              return res.status(400).send({status:false,msg:"enter valid url"})
         }

@@ -13,6 +13,7 @@ const createIntern =  async function (req, res) {
        {
            return res.status(400).send({status:false, msg: "Insert Data : BAD REQUEST" })
        }
+       if(Object.keys(req.query).length >0)  return res.status(400).send({status:false, msg: "don,t put data in params" })
        if (!isValid(name)) 
        {
            return res.status(400).send({ status:false,msg: "Enter Name" })
@@ -45,11 +46,11 @@ const createIntern =  async function (req, res) {
        if(!isValidcollegeName){
         return res.status(400).send({ msg: "Enter valid collegeName" })
        }
-       let checkCollege = await collegeModel.findOne({name:collegeName})
+       let checkCollege = await collegeModel.findOne({name:collegeName,isDeleted:false})
        if(!checkCollege) return res.status(400).send({msg:"collage not exists"})
 
        req.body.collegeId = checkCollege._id
-       let createdIntern = await internModel.create(req.body)
+       let createdIntern =  await internModel.create(req.body)
 
        res.status(201).send({status:true,data:createdIntern})
 
