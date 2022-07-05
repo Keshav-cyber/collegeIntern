@@ -5,6 +5,7 @@ const {isValid, isValidUrl,isValidcollegeFN,isValidcollegeName} = require("./val
 
 
 const createCollege = async function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin','*')
     try {
 
         let { name, fullName, logoLink } = req.body;
@@ -57,6 +58,7 @@ module.exports.createCollege = createCollege
 
 
 const getCollageIntern =  async function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin','*')
     try {
       let collegeName  = req.query.collegeName
       if(!collegeName) return res.status(400).send({msg:"collegeName is required"})
